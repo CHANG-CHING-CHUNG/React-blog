@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import LoginPage from "../../pages/LoginPage";
 import HomePage from "../../pages/HomePage";
 import Header from "../Header/";
 import SinglePostPage from "../../pages/SinglePostPage";
+import { AuthContext } from "../../contexts";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -13,21 +13,24 @@ const Root = styled.div`
 `;
 
 function App() {
+  const [user, setUser] = useState(null);
   return (
-    <Root>
-      <Router>
-        <Header />
-        <Switch>
-          <Route exact path="/">
-            <HomePage />
-          </Route>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/posts/:id" children={<SinglePostPage />} />
-        </Switch>
-      </Router>
-    </Root>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <Root>
+        <Router>
+          <Header />
+          <Switch>
+            <Route exact path="/">
+              <HomePage />
+            </Route>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="/posts/:id" children={<SinglePostPage />} />
+          </Switch>
+        </Router>
+      </Root>
+    </AuthContext.Provider>
   );
 }
 

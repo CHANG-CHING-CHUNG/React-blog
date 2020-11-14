@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { Link, useParams, Switch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getPosts } from "../../WebApi";
 
 const Root = styled.div`
@@ -11,7 +11,7 @@ const Root = styled.div`
 `;
 
 const PostContainer = styled.div`
-  border-bottom: px solid rgba(0, 12, 34, 0.2);
+  border-bottom: 1px solid rgba(0, 12, 34, 0.2);
   padding: 16px;
   display: flex;
   align-items: flex-end;

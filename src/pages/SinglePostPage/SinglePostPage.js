@@ -14,14 +14,15 @@ const PostContainer = styled.div`
   border-bottom: px solid rgba(0, 12, 34, 0.2);
   padding: 16px;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const PostTitle = styled.div`
   font-size: 24px;
   color: #333;
   text-decoration: none;
+  margin-bottom: 10px;
 `;
 
 const PostDate = styled.div`
@@ -34,21 +35,44 @@ SinglePostPage.propTypes = {
   post: PropTypes.object,
 };
 
+const PostHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  max-width: 600px;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+`;
+
+const PostBodyWrapper = styled.div`
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+`;
+
 export default function SinglePostPage() {
   let { id } = useParams();
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState([]);
 
   useEffect(() => {
     getPost(id).then((post) => setPost(post));
-  }, []);
+  }, [id]);
 
   return (
     <Root>
-      <PostContainer>
-        <PostTitle>{post.title}</PostTitle>
-        <PostDate>{new Date(post.createdAt).toLocaleString()}</PostDate>
-        <PostBody>{post.body}</PostBody>
-      </PostContainer>
+      {post.id ? (
+        <PostContainer>
+          <PostHeader>
+            <PostTitle>{post.title}</PostTitle>
+            <PostDate>{new Date(post.createdAt).toLocaleString()}</PostDate>
+          </PostHeader>
+          <PostBodyWrapper>
+            <PostBody>{post.body}</PostBody>
+          </PostBodyWrapper>
+        </PostContainer>
+      ) : null}
     </Root>
   );
 }
