@@ -10,6 +10,9 @@ import { getAuthToken } from "../../utils";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import AddPostPage from "../../pages/AddPostPage/AddPostPage";
+import AboutPage from "../../pages/AboutPage";
+import PostListPage from "../../pages/PostListPage";
+import RegistrationPage from "../../pages/RegistrationPage/RegistrationPage";
 
 const Root = styled.div`
   padding-top: 64px;
@@ -40,6 +43,15 @@ function App() {
             </Route>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/register">
+              <RegistrationPage />
+            </Route>
+            <Route path="/about">
+              <AboutPage />
+            </Route>
+            <Route path="/postsList">
+              <PostListPage />
             </Route>
             <Route path="/new-post">
               <AddPostPage />

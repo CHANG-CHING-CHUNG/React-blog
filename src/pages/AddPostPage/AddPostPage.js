@@ -7,6 +7,11 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 
+const Form = styled.form`
+  text-align: center;
+  margin-top: 5rem;
+`;
+
 export default function AddPostPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -24,7 +29,7 @@ export default function AddPostPage() {
     });
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <div>
         title:
         <input value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -35,6 +40,6 @@ export default function AddPostPage() {
       </div>
       <button>發布</button>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-    </form>
+    </Form>
   );
 }

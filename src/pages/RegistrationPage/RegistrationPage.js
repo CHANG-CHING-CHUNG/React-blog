@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
-import { login, getMe } from "../../WebApi";
+import { registerUser, getMe } from "../../WebApi";
 import { setAuthToken } from "../../utils";
 import { AuthContext } from "../../contexts";
 import { useHistory } from "react-router-dom";
@@ -14,32 +14,35 @@ const Form = styled.form`
   margin-top: 5rem;
 `;
 
-export default function LoginPage() {
-  const { setUser } = useContext(AuthContext);
+export default function RegistrationPage() {
+  const { setUser, setIsLoading } = useContext(AuthContext);
+  const [nickname, setNickname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage(null);
-    login(username, password).then((data) => {
-      if (data.ok === 0) {
-        return setErrorMessage(data.message);
+    registerUser(nickname, username, password).then((res) => {
+      if (!res.ok) {
+        setErrorMessage(res.message);
       }
-      setAuthToken(data.token);
+      setAuthToken(res.token);
       getMe().then((res) => {
-        if (res.ok !== 1) {
-          setAuthToken(null);
-          return setErrorMessage(res.toString());
+        if (res.ok) {
+          setIsLoading(false);
+          setUser(res.data);
+          history.push("/");
         }
-        setUser(res.data);
-        history.push("/");
       });
     });
   };
   return (
     <Form onSubmit={handleSubmit}>
+      <div>
+        nickname:{" "}
+        <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
+      </div>
       <div>
         username:{" "}
         <input value={username} onChange={(e) => setUsername(e.target.value)} />

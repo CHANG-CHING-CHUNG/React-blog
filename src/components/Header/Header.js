@@ -16,6 +16,7 @@ const HeaderContainer = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0px 32px;
   box-sizing: border-box;
+  background-color: #fff;
 `;
 
 const Brand = styled.div`
@@ -74,6 +75,12 @@ export default function Header() {
           <Nav to="/" $active={location.pathname === "/"}>
             首頁
           </Nav>
+          <Nav to="/about" $active={location.pathname === "/about"}>
+            關於部落格
+          </Nav>
+          <Nav to="/postsList" $active={location.pathname === "/postsList"}>
+            文章列表
+          </Nav>
           {user && (
             <Nav $active={location.pathname === "/new-post"} to="/new-post">
               發布文章
@@ -86,6 +93,11 @@ export default function Header() {
           {!user && (
             <Nav $active={location.pathname === "/login"} to="/login">
               登入
+            </Nav>
+          )}
+          {!user && (
+            <Nav $active={location.pathname === "/register"} to="/register">
+              註冊
             </Nav>
           )}
           {user && <Nav onClick={handleLogout}>登出</Nav>}
