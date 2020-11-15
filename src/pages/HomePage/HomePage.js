@@ -51,7 +51,7 @@ export default function HomePage() {
   return (
     <Root>
       {posts.map((post) => (
-        <Post post={post} />
+        <Post key={post.id} post={post} />
       ))}
     </Root>
   );

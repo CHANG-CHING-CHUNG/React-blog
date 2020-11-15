@@ -32,3 +32,18 @@ export const getMe = () => {
     },
   }).then((res) => res.json());
 };
+
+export const addPost = (title, body) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/posts`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
+      body,
+    }),
+  }).then((res) => res.json());
+};

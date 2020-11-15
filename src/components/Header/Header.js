@@ -4,7 +4,6 @@ import { AuthContext } from "../../contexts";
 import { setAuthToken } from "../../utils";
 
 import { useHistory, Link, useLocation } from "react-router-dom";
-
 const HeaderContainer = styled.div`
   height: 64px;
   display: flex;
@@ -58,11 +57,14 @@ const LeftContainer = styled.div`
 
 export default function Header() {
   const location = useLocation();
-  const { user } = useContext(AuthContext);
+  const { user, setUser, isLoading } = useContext(AuthContext);
   const history = useHistory();
   const handleLogout = () => {
     setAuthToken("");
-    history.push("/");
+    setUser(null);
+    if (location.pathname !== "/") {
+      history.push("/");
+    }
   };
   return (
     <HeaderContainer>
@@ -79,14 +81,16 @@ export default function Header() {
           )}
         </NavbarList>
       </LeftContainer>
-      <NavbarList>
-        {!user && (
-          <Nav $active={location.pathname === "/login"} to="/login">
-            登入
-          </Nav>
-        )}
-        {user && <Nav onClick={handleLogout}>登出</Nav>}
-      </NavbarList>
+      {isLoading ? null : (
+        <NavbarList>
+          {!user && (
+            <Nav $active={location.pathname === "/login"} to="/login">
+              登入
+            </Nav>
+          )}
+          {user && <Nav onClick={handleLogout}>登出</Nav>}
+        </NavbarList>
+      )}
     </HeaderContainer>
   );
 }

@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
   const handleSubmit = (e) => {
+    e.preventDefault();
     setErrorMessage(null);
     login(username, password).then((data) => {
       if (data.ok === 0) {

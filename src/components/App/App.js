@@ -5,8 +5,11 @@ import HomePage from "../../pages/HomePage";
 import Header from "../Header/";
 import SinglePostPage from "../../pages/SinglePostPage";
 import { AuthContext } from "../../contexts";
+import { getMe } from "../../WebApi";
+import { getAuthToken } from "../../utils";
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import AddPostPage from "../../pages/AddPostPage/AddPostPage";
 
 const Root = styled.div`
   padding-top: 64px;
@@ -14,8 +17,20 @@ const Root = styled.div`
 
 function App() {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (getAuthToken()) {
+      getMe().then((res) => {
+        if (res.ok) {
+          setIsLoading(false);
+          setUser(res.data);
+        }
+      });
+    }
+  }, []);
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
       <Root>
         <Router>
           <Header />
@@ -25,6 +40,9 @@ function App() {
             </Route>
             <Route path="/login">
               <LoginPage />
+            </Route>
+            <Route path="/new-post">
+              <AddPostPage />
             </Route>
             <Route path="/posts/:id" children={<SinglePostPage />} />
           </Switch>
