@@ -30,6 +30,8 @@ function App() {
           setUser(res.data);
         }
       });
+    } else {
+      setIsLoading(false);
     }
   }, []);
   return (
