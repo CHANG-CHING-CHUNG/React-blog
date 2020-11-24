@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-import { useParams } from "react-router-dom";
-import { getPost } from "../../WebApi";
+import { useParams, useHistory } from "react-router-dom";
+import { removePost } from "../../WebApi";
+import { getPost } from "../../redux/reducers/postReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const Root = styled.div`
   width: 80%;
@@ -19,17 +21,22 @@ const PostContainer = styled.div`
 `;
 
 const PostTitle = styled.div`
-  font-size: 24px;
+  font-size: 30px;
   color: #333;
   text-decoration: none;
   margin-bottom: 10px;
+  font-weight: bold;
 `;
 
 const PostDate = styled.div`
   color: rgba(0, 0, 0, 0.8);
 `;
 
-const PostBody = styled.div``;
+const PostBody = styled.div`
+  white-space: pre-line;
+  line-height: 2;
+  text-align: left;
+`;
 
 SinglePostPage.propTypes = {
   post: PropTypes.object,
@@ -53,17 +60,27 @@ const PostBodyWrapper = styled.div`
 `;
 
 export default function SinglePostPage() {
+  const history = useHistory();
   let { id } = useParams();
-  const [post, setPost] = useState([]);
+  const dispatch = useDispatch();
+  const isLoading = useSelector((store) => store.posts.isLoadingPost);
+  const post = useSelector((store) => store.posts.post);
 
   useEffect(() => {
-    getPost(id).then((post) => setPost(post));
-  }, [id]);
+    dispatch(getPost(id));
+  }, [id, dispatch]);
+
+  const handleRemovePost = () => {
+    removePost(id).then(() => {
+      history.push("/");
+    });
+  };
 
   return (
     <Root>
-      {post.id ? (
+      {!isLoading && post && post.id ? (
         <PostContainer>
+          <button onClick={handleRemovePost}>刪除</button>
           <PostHeader>
             <PostTitle>{post.title}</PostTitle>
             <PostDate>{new Date(post.createdAt).toLocaleString()}</PostDate>

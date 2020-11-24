@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { addPost } from "../../WebApi";
 import { useHistory } from "react-router-dom";
+import { newPost, setNewPostResponse } from "../../redux/reducers/postReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const ErrorMessage = styled.div`
   color: red;
@@ -17,17 +18,28 @@ export default function AddPostPage() {
   const [body, setBody] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+
+  const dispatch = useDispatch();
+  const newPostResponse = useSelector((store) => store.posts.newPostResponse);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addPost(title, body).then((res) => {
-      if (res.ok === 0) {
-        setErrorMessage(res.message);
-      }
-      setTitle("");
-      setBody("");
-      history.push("/");
-    });
+    dispatch(newPost(title, body));
   };
+
+  useEffect(() => {
+    if (newPostResponse && newPostResponse.ok === 0) {
+      setErrorMessage(newPostResponse.message);
+    }
+    setTitle("");
+    setBody("");
+    if (newPostResponse && newPostResponse.id) {
+      history.push("/posts/" + newPostResponse.id);
+    }
+    return () => {
+      dispatch(setNewPostResponse(null));
+    };
+  }, [newPostResponse, history, dispatch]);
   return (
     <Form onSubmit={handleSubmit}>
       <div>

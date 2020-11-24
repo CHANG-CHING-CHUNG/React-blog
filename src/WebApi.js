@@ -9,6 +9,12 @@ export const getPosts = () => {
   );
 };
 
+export const removePost = (id) => {
+  return fetch(`${BASE_URL}/posts/${id}`, {
+    method: "DELETE",
+  }).then((res) => res.json());
+};
+
 export const getPostsByLimit = async (URL) => {
   const res = await fetch(URL);
   const { headers } = res;
