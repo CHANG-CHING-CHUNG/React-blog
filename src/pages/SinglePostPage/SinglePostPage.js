@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { useParams, useHistory } from "react-router-dom";
 import { removePost } from "../../WebApi";
-import { getPost } from "../../redux/reducers/postReducer";
+import { getPost, setPost } from "../../redux/reducers/postReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const Root = styled.div`
@@ -65,9 +65,14 @@ export default function SinglePostPage() {
   const dispatch = useDispatch();
   const isLoading = useSelector((store) => store.posts.isLoadingPost);
   const post = useSelector((store) => store.posts.post);
-
+  const postUserId = post ? post.userId : null;
+  const userId = useSelector((store) => store.user.id);
   useEffect(() => {
     dispatch(getPost(id));
+
+    return () => {
+      dispatch(setPost(null));
+    };
   }, [id, dispatch]);
 
   const handleRemovePost = () => {
@@ -75,12 +80,20 @@ export default function SinglePostPage() {
       history.push("/");
     });
   };
+  const handleEditPost = () => {
+    history.push(`/posts/${id}/edit`);
+  };
 
   return (
     <Root>
       {!isLoading && post && post.id ? (
         <PostContainer>
-          <button onClick={handleRemovePost}>刪除</button>
+          {postUserId === userId && (
+            <>
+              <button onClick={handleRemovePost}>刪除</button>
+              <button onClick={handleEditPost}>編輯</button>
+            </>
+          )}
           <PostHeader>
             <PostTitle>{post.title}</PostTitle>
             <PostDate>{new Date(post.createdAt).toLocaleString()}</PostDate>

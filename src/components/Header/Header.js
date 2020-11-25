@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { AuthContext } from "../../contexts";
 import { setAuthToken } from "../../utils";
-
 import { useHistory, Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../redux/reducers/userReducer";
+
 const HeaderContainer = styled.div`
   height: 64px;
   display: flex;
@@ -58,11 +59,20 @@ const LeftContainer = styled.div`
 
 export default function Header() {
   const location = useLocation();
-  const { user, setUser, isLoading } = useContext(AuthContext);
+  const userId = useSelector((store) => store.user.id);
+  const isLoadingUser = useSelector((store) => store.user.isLoadingUser);
+  const dispatch = useDispatch();
   const history = useHistory();
   const handleLogout = () => {
     setAuthToken("");
-    setUser(null);
+    dispatch(
+      setUser({
+        id: null,
+        nickname: null,
+        password: null,
+        username: null,
+      })
+    );
     if (location.pathname !== "/") {
       history.push("/");
     }
@@ -81,26 +91,26 @@ export default function Header() {
           <Nav to="/postsList" $active={location.pathname === "/postsList"}>
             文章列表
           </Nav>
-          {user && (
+          {userId && (
             <Nav $active={location.pathname === "/new-post"} to="/new-post">
               發布文章
             </Nav>
           )}
         </NavbarList>
       </LeftContainer>
-      {isLoading ? null : (
+      {isLoadingUser ? null : (
         <NavbarList>
-          {!user && (
+          {!userId && (
             <Nav $active={location.pathname === "/login"} to="/login">
               登入
             </Nav>
           )}
-          {!user && (
+          {!userId && (
             <Nav $active={location.pathname === "/register"} to="/register">
               註冊
             </Nav>
           )}
-          {user && <Nav onClick={handleLogout}>登出</Nav>}
+          {userId && <Nav onClick={handleLogout}>登出</Nav>}
         </NavbarList>
       )}
     </HeaderContainer>

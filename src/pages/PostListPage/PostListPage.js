@@ -3,7 +3,12 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { Link } from "react-router-dom";
-import { getPostsByLimit, getTotalCountOfPosts, LINK_URL } from "../../WebApi";
+import { LINK_URL } from "../../WebApi";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getPostsByLimit,
+  getTotalCountOfPosts,
+} from "../../redux/reducers/postReducer";
 
 const Root = styled.div`
   width: 80%;
@@ -48,22 +53,22 @@ Post.propTypes = {
 };
 
 export default function PostListPage() {
-  const [posts, setPosts] = useState([]);
-  const [totalCount, setTotalCount] = useState("");
   const [link, setLink] = useState(LINK_URL);
-  const [links, setLinks] = useState([]);
-  useEffect(() => {
-    getPostsByLimit(link).then((posts) => {
-      setLinks(posts.links);
-      setPosts(posts.posts);
-    });
-  }, [link]);
+  const links = useSelector((state) => state.posts.links);
+  const postsList = useSelector((state) => state.posts.postsList);
+  const totalCount = useSelector((state) => state.posts.postsCount);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getTotalCountOfPosts().then((count) => setTotalCount(count));
-  }, [totalCount]);
+    dispatch(getPostsByLimit(link));
+  }, [link, dispatch]);
+
+  useEffect(() => {
+    dispatch(getTotalCountOfPosts());
+  }, [totalCount, dispatch]);
   let PaginationBtns;
-  if (links.length === 4) {
+  if (links && links.length === 4) {
     PaginationBtns = (
       <div>
         <PaginationBtn onClick={() => setLink(links[0][0])}>
@@ -98,9 +103,7 @@ export default function PostListPage() {
   return (
     <Root>
       <Header>總共有: {totalCount} 筆文章。</Header>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {postsList && postsList.map((post) => <Post key={post.id} post={post} />)}
       {PaginationBtns}
     </Root>
   );

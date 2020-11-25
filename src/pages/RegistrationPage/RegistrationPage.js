@@ -1,9 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { registerUser, getMe } from "../../WebApi";
-import { setAuthToken } from "../../utils";
 import { AuthContext } from "../../contexts";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  registerNewUser,
+  setIsLoadingUser,
+  setErrorMessage,
+} from "../../redux/reducers/userReducer";
 
 const ErrorMessage = styled.div`
   color: red;
@@ -15,27 +19,29 @@ const Form = styled.form`
 `;
 
 export default function RegistrationPage() {
-  const { setUser, setIsLoading } = useContext(AuthContext);
+  console.log(useContext(AuthContext));
   const [nickname, setNickname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const history = useHistory();
+
+  const userId = useSelector((store) => store.user.id);
+  const errorMessage = useSelector((store) => store.user.errorMessage);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userId) {
+      history.push("/");
+    }
+    return () => {
+      dispatch(setErrorMessage(null));
+    };
+  }, [userId, history, dispatch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerUser(nickname, username, password).then((res) => {
-      if (!res.ok) {
-        setErrorMessage(res.message);
-      }
-      setAuthToken(res.token);
-      getMe().then((res) => {
-        if (res.ok) {
-          setIsLoading(false);
-          setUser(res.data);
-          history.push("/");
-        }
-      });
-    });
+    dispatch(setIsLoadingUser(true));
+    dispatch(registerNewUser(nickname, username, password));
   };
   return (
     <Form onSubmit={handleSubmit}>

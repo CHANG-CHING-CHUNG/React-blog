@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../../redux/reducers/postReducer";
 import { Link } from "react-router-dom";
-import { getPosts } from "../../WebApi";
 
 const Root = styled.div`
   width: 80%;
@@ -42,17 +42,16 @@ Post.propTypes = {
 };
 
 export default function HomePage() {
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.posts.posts);
 
   useEffect(() => {
-    getPosts().then((posts) => setPosts(posts));
-  }, []);
+    dispatch(getPosts());
+  }, [dispatch]);
 
   return (
     <Root>
-      {posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {posts && posts.map((post) => <Post key={post.id} post={post} />)}
     </Root>
   );
 }

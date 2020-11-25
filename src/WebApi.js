@@ -84,6 +84,21 @@ export const addPost = (title, body) => {
   }).then((res) => res.json());
 };
 
+export const updatePost = (title, body, id) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/posts/${id}`, {
+    method: "PATCH",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
+      body,
+    }),
+  }).then((res) => res.json());
+};
+
 export const registerUser = (nickname, username, password) => {
   return fetch(`${BASE_URL}/register`, {
     method: "POST",
