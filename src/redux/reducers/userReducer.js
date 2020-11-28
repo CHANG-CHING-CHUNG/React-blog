@@ -47,14 +47,16 @@ export const loginUser = (username, password) => (dispatch) => {
 };
 
 export const getUserInfo = () => (dispatch) => {
-  getMe().then((res) => {
-    if (res && res.ok === 1) {
-      dispatch(setUser(res.data));
+  setTimeout(() => {
+    getMe().then((res) => {
+      if (res && res.ok === 1) {
+        dispatch(setUser(res.data));
+        dispatch(setIsLoadingUser(false));
+        return;
+      }
       dispatch(setIsLoadingUser(false));
-      return;
-    }
-    dispatch(setIsLoadingUser(false));
-  });
+    });
+  }, 500);
 };
 
 export const registerNewUser = (nickname, username, password) => (dispatch) => {
