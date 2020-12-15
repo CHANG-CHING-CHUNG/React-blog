@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# React Blog
+* 這是 Lidemy 程式導師計劃第4期的作業
+* [Blog 網址](https://chang-ching-chung.github.io/React-blog/#/)
+* 使用 [Lidemy API](https://github.com/Lidemy/lidemy-student-json-api-server)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![](https://i.imgur.com/oJCpmfp.png)
 
-## Available Scripts
+## 技術棧
+* Node
+JavaScript 的 runtime
+* React
+使使用者可以在 JavaScript 裡面用 JSX 語法寫 components
+* React-DOM
+讓使用者可以使用 ReactDOM.render 將 React components 渲染在瀏覽器上 
+* React-redux
+是一套狀態管理套件，讓使用者可以在 React 裡面建立一個 Global store 儲存應用程式執行期間所用到的 data，並透過 reducer, action 及 dispatch 更新 data
+* React-router-dom
+使用者可以透過這個套件達成單頁面應用程式的頁面導向，改變網址並改變頁面內容卻不用頁面重新刷新的功能
+* Redux-toolkit
+Redux toolkit 是一個將 Redux 的建立流程標準化的套件，一但安裝之後，自動會產生 Redux 樣板，減少使用者設置 Redux store 的麻煩
+* Styled-components
+是一套讓使用者可以在 React 裡面使用 CSS 語法裝飾 components 的套件，使用者可以在 CSS 語法裡面加入條件判斷，讓 Styled components 可以根據條件變換 CSS 的顏色或是字型等
+* Husky, Lint-staged, Prettier
+Husky 是用來加上 git hooks 的套件，例如，pre-commit ，表示在 commit 前執行預先設置好的腳本
+Prettier 用來格式化程式碼，使其更好閱讀的套件
+Lint-staged 此套件讓使用者可以執行例如 prettier 腳本在 git add 之後還沒 commit 的檔案，在這裡我們用來將檔案在 commit 之前做程式碼格式化。
 
-In the project directory, you can run:
+## 前台
+### 主頁
+* 顯示所有文章列表
+![](https://i.imgur.com/l3RTDD1.png)
+### 單頁文章內容
+* 點進文章標題後，顯示該文章標題、發文時間以及文章內容
+![](https://i.imgur.com/3RVB89u.png)
 
-### `yarn start`
+* 如果是本人發表的文章，標題上方則會顯示刪除及編輯按鈕
+![](https://i.imgur.com/o23dxkJ.png)
+* 點擊刪除即可刪除該文章
+* 點擊編輯則會跳到編輯頁面，編輯完標題及內容按下更新鈕即可完成更新
+*  **注意**: 必須註冊會員並登入後才能刪除及編輯文章
+![](https://i.imgur.com/sl1js2A.png)
+![](https://i.imgur.com/OJDoM4W.png)
+### 關於部落格
+* 部落格介紹
+![](https://i.imgur.com/cODDqhi.png)
+### 文章列表
+* 排序從新到舊，5筆為一頁列出文章
+![](https://i.imgur.com/H2GdNlq.png)
+![](https://i.imgur.com/LuLvK58.png)
+### 發布文章
+* 填寫文章標題及內容即可發布文章
+* **注意**: 必須註冊會員並登入後才能發布文章
+![](https://i.imgur.com/bZcs1d2.png)
+### 註冊
+* 填寫匿稱、使用者名稱及密碼後按下登入，即完成註冊並登入，登入後即會跳轉至首頁
+* **注意**: 此處密碼會在後端統一改成 ```Lidemy```
+![](https://i.imgur.com/I730g1p.png)
+### 登入
+* 填寫之前註冊的使用者名稱及密碼及可登入，登入後一樣導向首頁
+![](https://i.imgur.com/HXvuHl5.png)
+### 登出
+* 按下後即登出
+![](https://i.imgur.com/aJ6mXkO.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## 程式碼說明
+* utils.js: 此檔案包含了兩個函式，setAuthToken 以及 getAuthToken，用來將 token 存到 local storage 以及從 local storage 取出 token
+![](https://i.imgur.com/AAihMMu.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+* WebApi.js: 此檔案包含了所有用函式將 fetch 包起來的函式，例如下圖 getPosts 函式
+![](https://i.imgur.com/eJdzsEM.png)
 
-### `yarn test`
+* postReducer.js: 此檔案包含了用 redux toolkit 所給出的 createSlice API 建立的 postReducer 以及用 WebAPI 所建立的 redux thunk，如下圖
+![](https://i.imgur.com/UUmRkz6.png)
+![](https://i.imgur.com/ry49m7L.png)
+* userReducer.js: 此檔案包含了用 redux toolkit 所給出的 createSlice API 建立的 userReducer 以及用 WebAPI 所建立的 redux thunk，如下圖
+![](https://i.imgur.com/d0owtHe.png)
+![](https://i.imgur.com/WuX7Bev.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
