@@ -1,5 +1,7 @@
 # React Blog
-* 這是 Lidemy 程式導師計劃第4期的作業
+* 測試帳密:  
+帳號: john  
+密碼: Lidemy
 * [Blog 網址](https://chang-ching-chung.github.io/React-blog/#/)
 * 使用 [Lidemy API](https://github.com/Lidemy/lidemy-student-json-api-server)
 
