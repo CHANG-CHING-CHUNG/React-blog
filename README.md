@@ -3,7 +3,7 @@
 帳號: john  
 密碼: john
 * [Blog 網址](https://chang-ching-chung.github.io/React-blog/#/)
-* 使用Lidemy API 改的 [test-json-server API](https://test-json-server-300200.df.r.appspot.com/users)
+* 使用Lidemy API 改的 [test-json-server API](https://warm-reef-89911.herokuapp.com)
 * 原始[Lidemy API](https://github.com/Lidemy/lidemy-student-json-api-server)  
 
 ![](https://i.imgur.com/oJCpmfp.png)
