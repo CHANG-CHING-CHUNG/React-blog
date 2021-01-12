@@ -1,7 +1,7 @@
 import { getAuthToken } from "./utils";
-const BASE_URL = "https://test-json-server-300200.df.r.appspot.com";
+const BASE_URL = "https://warm-reef-89911.herokuapp.com";
 export const LINK_URL =
-  "https://test-json-server-300200.df.r.appspot.com/posts?_page=1&_limit=5&_sort=createdAt&_order=desc";
+  "https://warm-reef-89911.herokuapp.com/posts?_page=1&_limit=5&_sort=createdAt&_order=desc";
 
 export const getPosts = () => {
   return fetch(`${BASE_URL}/posts?_sort=createdAt&_order=desc`).then((res) =>
